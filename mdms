@@ -1,0 +1,12 @@
+#!/bin/env python
+
+import config.parser
+
+def main():
+    with open('config.toml') as conffile:
+        conf = config.parser.parse(conffile.read())
+
+    print(conf['echo'])
+
+if __name__ == '__main__':
+    main()
