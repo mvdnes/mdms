@@ -1,2 +1,5 @@
-[echo]
-value = "Hello, world!"
+[database]
+type = "sqlite"
+
+[database.sqlite]
+file = "dbmdms.db"

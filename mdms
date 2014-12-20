@@ -1,12 +1,27 @@
 #!/bin/env python
 
-import config.parser
+import sys
+import config
+import document
+import database.sqlite
+import uuid as uuidlib
 
 def main():
-    with open('config.toml') as conffile:
-        conf = config.parser.parse(conffile.read())
-
-    print(conf['echo'])
+    configuration = config.parse('config.toml')
+    db = database.get_instance(configuration)
+    if len(sys.argv) > 1:
+        uuid = uuidlib.UUID(sys.argv[1])
+        doc = db.load(uuid)
+        print(doc.creation_date)
+        if len(sys.argv) > 2:
+            doc.name = sys.argv[2]
+            db.save(doc)
+        print(doc.name)
+    else:
+        doc = document.Document()
+        db.save(doc)
+        print(doc.uuid)
+        print(doc.creation_date)
 
 if __name__ == '__main__':
     main()
