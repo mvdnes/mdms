@@ -17,8 +17,10 @@ def main():
             doc.name = sys.argv[2]
             db.save(doc)
         print(doc.name)
+        print(doc.tags)
     else:
         doc = document.Document()
+        doc.add_tag("dummy")
         db.save(doc)
         print(doc.uuid)
         print(doc.creation_date)

@@ -36,6 +36,11 @@ class DbSqlite:
             "extra": document.extra
         }
         cursor.execute(stmt, values)
+        cursor.execute("DELETE FROM tag WHERE uuid=:uuid", {"uuid": document.uuid.bytes})
+        def tag_gen():
+            for t in document.tags:
+                yield (document.uuid.bytes, t)
+        cursor.executemany("INSERT INTO tag VALUES (:uuid, :tag)", tag_gen())
         self.conn.commit()
 
     def load(self, uuid):
@@ -45,12 +50,18 @@ class DbSqlite:
         result = cursor.fetchone()
         if result is None:
             return None
+
+        stmt = "SELECT tag FROM tag WHERE uuid=:uuid"
+        cursor.execute(stmt, {"uuid": uuid.bytes})
+        tags = set([t[0] for t in cursor.fetchall()])
+
         return document.Document(
             uuid = uuid,
             name = result[0],
             creation_date = datetime.datetime.fromtimestamp(result[1]),
             document_date = datetime.datetime.fromtimestamp(result[2]),
             extra = result[3],
+            tags = tags,
             in_database = True,
         )
 
@@ -63,7 +74,7 @@ class DbSqlite:
 
     def update_from_version(self, old_version):
         cursor = self.conn.cursor()
-        if old_version == 0:
+        if old_version < 1:
             cursor.execute("""
                 CREATE TABLE document(
                     uuid BLOB PRIMARY KEY,
@@ -72,9 +83,8 @@ class DbSqlite:
                     document_date INT,
                     extra TEXT)
             """)
-            cursor.execute("CREATE TABLE tags(id INT PRIMARY KEY, name TEXT)")
-            cursor.execute("CREATE TABLE tagged(uuid BLOB, tag INT, PRIMARY KEY (uuid, tag))")
-            cursor.execute("UPDATE config SET value = '1' WHERE key = 'version'")
+            cursor.execute("CREATE TABLE tag(uuid BLOB, tag TEXT, PRIMARY KEY (uuid, tag))")
+        cursor.execute("UPDATE config SET value = '1' WHERE key = 'version'")
         self.conn.commit()
     
     def ensure_notempty(self):

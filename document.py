@@ -2,7 +2,13 @@ import uuid as uuidlib
 import datetime
 
 class Document:
-    def __init__(self, uuid=None, name="", creation_date=None, document_date=None, tags=[], extra="", in_database=False):
+    def __init__(self,
+            uuid=None, name="",
+            creation_date=None,
+            document_date=None,
+            tags=set(),
+            extra="",
+            in_database=False):
         if uuid is None:
             self.uuid = uuidlib.uuid4()
         else:
@@ -19,3 +25,9 @@ class Document:
         self.tags = tags
         self.extra = extra
         self.in_database = in_database
+
+    def add_tag(self, tag):
+        self.tags.add(tag)
+
+    def remove_tag(self, tag):
+        self.tags.remove(tag)
