@@ -1,3 +1,5 @@
+import database.sqlite
+
 def get_instance(configuration):
     if "database" not in configuration:
         raise KeyError("Did not found database in configuration")

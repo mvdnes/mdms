@@ -1,6 +1,7 @@
 import sqlite3
 import document
 import datetime
+import uuid as uuidlib
 
 class DbSqlite:
     def __init__(self, configuration):
@@ -43,9 +44,11 @@ class DbSqlite:
         cursor.executemany("INSERT INTO tag VALUES (:uuid, :tag)", tag_gen())
         self.conn.commit()
 
-    def load(self, uuid):
+    def load(self, uuid=None, raw_uuid=None):
         cursor = self.conn.cursor()
         stmt = "SELECT name, creation_date, document_date, extra FROM document WHERE uuid = :uuid"
+        if raw_uuid is not None:
+            uuid = uuidlib.UUID(bytes = raw_uuid)
         cursor.execute(stmt, {"uuid": uuid.bytes})
         result = cursor.fetchone()
         if result is None:
@@ -64,6 +67,24 @@ class DbSqlite:
             tags = tags,
             in_database = True,
         )
+
+    def search(self, tags, from_date, to_date):
+        cursor = self.conn.cursor()
+        stmt = """
+SELECT uuid
+FROM document
+WHERE document_date > ?
+    AND document_date < ?
+    AND uuid IN (
+        SELECT uuid
+        FROM tag
+        WHERE tag IN (""" + ",".join("?" * len(tags)) + """)
+        GROUP BY uuid
+        HAVING COUNT(tag) = ?
+    );"""
+        values = [from_date.timestamp(), to_date.timestamp()] + tags + [len(tags)]
+        cursor.execute(stmt, values)
+        return [self.load(raw_uuid=r[0]) for r in cursor.fetchall()]
 
     def update_db(self):
         self.ensure_notempty()

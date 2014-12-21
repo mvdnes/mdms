@@ -1,29 +1,36 @@
 #!/bin/env python
 
-import sys
+"""
+usage: mdms [--version] <command> [<args>...]
+
+options:
+    --version   display version information
+
+the available commands are:
+    search      Search for a document
+
+use 'mdms help <command>' for information about a command
+"""
+
+from docopt import docopt
 import config
-import document
-import database.sqlite
-import uuid as uuidlib
+import database
+import filesystem
 
 def main():
     configuration = config.parse('config.toml')
     db = database.get_instance(configuration)
-    if len(sys.argv) > 1:
-        uuid = uuidlib.UUID(sys.argv[1])
-        doc = db.load(uuid)
-        print(doc.creation_date)
-        if len(sys.argv) > 2:
-            doc.name = sys.argv[2]
-            db.save(doc)
-        print(doc.name)
-        print(doc.tags)
-    else:
-        doc = document.Document()
-        doc.add_tag("dummy")
-        db.save(doc)
-        print(doc.uuid)
-        print(doc.creation_date)
+    fs = filesystem.get_instance(configuration)
+
+    args = docopt(__doc__,
+            version = "mdms version 0.0.0",
+            options_first = True)
+    argv = [args['<command>']] + args['<args>']
+
+    if args['<command>'] == 'search':
+        import mdms_search
+        mdms_search.main(argv, db, fs)
+
 
 if __name__ == '__main__':
     main()
