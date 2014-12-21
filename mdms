@@ -1,15 +1,16 @@
 #!/bin/env python
 
 """
-usage: mdms [--version] <command> [<args>...]
+usage: mdms [--version] [-h] <command> [<args>...]
 
 options:
     --version   display version information
+    --help, -h  display help information
 
 the available commands are:
     search      Search for a document
 
-use 'mdms help <command>' for information about a command
+use 'mdms <command> -h' for information about a command
 """
 
 from docopt import docopt
