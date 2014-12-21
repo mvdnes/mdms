@@ -12,6 +12,7 @@ the available commands are:
     create      Create a new document
     modify      Modify metadata or files
     remove      Remove a document
+    web         Start webserver
 
 use 'mdms <command> -h' for information about a command
 """
@@ -43,6 +44,9 @@ def main():
     elif args['<command>'] == 'remove':
         import mdms_remove
         mdms_remove.main(argv, db, fs)
+    elif args['<command>'] == 'web':
+        import mdms_web
+        mdms_web.main(argv, db, fs)
     else:
         print(__doc__)
 
