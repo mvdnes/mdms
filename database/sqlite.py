@@ -86,6 +86,13 @@ WHERE document_date > ?
         cursor.execute(stmt, values)
         return [self.load(raw_uuid=r[0]) for r in cursor.fetchall()]
 
+    def remove(self, doc):
+        cursor = self.conn.cursor()
+        uuid = doc.uuid.bytes
+        cursor.execute("DELETE FROM document WHERE uuid = ?", (uuid,))
+        cursor.execute("DELETE FROM tag WHERE uuid = ?", (uuid,))
+        self.conn.commit()
+
     def update_db(self):
         self.ensure_notempty()
         cursor = self.conn.cursor()

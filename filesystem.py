@@ -31,4 +31,15 @@ class Filesystem:
 
     def remove(self, uuid, file):
         full = self.get_dir(uuid) + file
-        os.remove(full)
+        try:
+            os.remove(full)
+        except FileNotFoundError:
+            return False
+        return True
+
+    def remove_dir(self, uuid):
+        directory = self.get_dir(uuid)
+        try:
+            shutil.rmtree(directory)
+        except FileNotFoundError:
+            pass

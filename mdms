@@ -9,6 +9,9 @@ options:
 
 the available commands are:
     search      Search for a document
+    create      Create a new document
+    modify      Modify metadata or files
+    remove      Remove a document
 
 use 'mdms <command> -h' for information about a command
 """
@@ -31,6 +34,17 @@ def main():
     if args['<command>'] == 'search':
         import mdms_search
         mdms_search.main(argv, db, fs)
+    elif args['<command>'] == 'create':
+        import mdms_create
+        mdms_create.main(argv, db, fs)
+    elif args['<command>'] == 'modify':
+        import mdms_modify
+        mdms_modify.main(argv, db, fs)
+    elif args['<command>'] == 'remove':
+        import mdms_remove
+        mdms_remove.main(argv, db, fs)
+    else:
+        print(__doc__)
 
 
 if __name__ == '__main__':

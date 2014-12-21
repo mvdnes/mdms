@@ -1,10 +1,11 @@
 """
-usage: mdms search --uuid=<uuid>
+usage: mdms search [--files-only] --uuid=<uuid>
        mdms search [--from=<from>] [--to=<to>] (<tags>...)
 
 options:
-    --from=<from>   starting date to search from
-    --to=<to>       end date to search to
+    --files-only, -f    display only the filelist
+    --from=<from>       starting date to search from
+    --to=<to>           end date to search to
 """
 
 from docopt import docopt
@@ -15,7 +16,7 @@ import datetime
 def main(argv, db, fs):
     args = docopt(__doc__, argv = argv)
     if args['--uuid'] is not None:
-        find_uuid(args['--uuid'], db, fs)
+        find_uuid(args['--uuid'], args['--files-only'], db, fs)
     else:
         find_tags(args['<tags>'], args['--from'], args['--to'], db, fs)
 
@@ -40,7 +41,7 @@ Files:
             doc.extra,
             files))
 
-def find_uuid(uuid_string, db, fs):
+def find_uuid(uuid_string, files_only, db, fs):
     try:
         uuid = uuidlib.UUID(uuid_string)
     except:
@@ -51,7 +52,10 @@ def find_uuid(uuid_string, db, fs):
     if doc is None:
         print("Could not find document")
     files = fs.get(uuid)
-    print_document(doc, files)
+    if files_only is False:
+        print_document(doc, files)
+    else:
+        print("\n".join(files))
 
 def find_tags(tags, from_raw, to_raw, db, fs):
     try:
