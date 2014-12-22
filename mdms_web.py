@@ -199,3 +199,9 @@ def delete(uuid):
 @app.route("/create")
 def create():
     return flask.render_template("create.html")
+
+@app.route("/tagoverview")
+def tagoverview():
+    db, _ = get_dbfs()
+    tags = db.tagcount()
+    return flask.render_template("tagoverview.html", tags=tags)

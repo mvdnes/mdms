@@ -86,6 +86,12 @@ WHERE document_date > ?
         cursor.execute(stmt, values)
         return [self.load(raw_uuid=r[0]) for r in cursor.fetchall()]
 
+    def tagcount(self):
+        cursor = self.conn.cursor()
+        stmt = "SELECT tag, COUNT(uuid) FROM tag GROUP BY tag"
+        cursor.execute(stmt)
+        return [{'name': r[0], 'count': r[1]} for r in cursor.fetchall()]
+
     def tagless(self):
         cursor = self.conn.cursor()
         stmt = "SELECT uuid FROM document WHERE uuid NOT IN (SELECT uuid FROM tag)"

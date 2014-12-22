@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+    {% for tag in tags %}
+    <li><a href="{{ url_for('search') }}?tags={{ tag.name }}">{{ tag.name }}</a>: {{ tag.count }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
