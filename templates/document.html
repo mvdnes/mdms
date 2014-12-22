@@ -7,7 +7,7 @@
     <tr><td>Tags:</td>
         <td>
             <ul>
-                {% for tag in doc.tags %}
+                {% for tag in doc.tags|sort %}
                 <li>{{ tag }}</li>
                 {% endfor %}
             </ul>
