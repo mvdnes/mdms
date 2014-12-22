@@ -21,6 +21,11 @@ class Filesystem:
             os.makedirs(directory)
         shutil.copy2(filepath, directory)
 
+    def save(self, uuid, file, filename):
+        directory = self.get_dir(uuid)
+        target = os.path.join(directory, filename)
+        file.save(target)
+
     def get(self, uuid, file=None, basename_only=False):
         result = []
         directory = self.get_dir(uuid)

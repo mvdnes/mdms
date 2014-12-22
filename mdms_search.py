@@ -23,7 +23,7 @@ def main(argv, db, fs):
 def print_document(doc, filelist):
     files = "\n".join(filelist)
     tags = ", ".join(doc.tags)
-    
+
     print("""UUID:           {0}
 Document name:  {1}
 Document date:  {2}
