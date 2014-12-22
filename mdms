@@ -46,7 +46,7 @@ def main():
         mdms_remove.main(argv, db, fs)
     elif args['<command>'] == 'web':
         import mdms_web
-        mdms_web.main(argv, db, fs)
+        mdms_web.main(argv)
     else:
         print(__doc__)
 

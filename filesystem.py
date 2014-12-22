@@ -21,13 +21,24 @@ class Filesystem:
             os.makedirs(directory)
         shutil.copy2(filepath, directory)
 
-    def get(self, uuid):
+    def get(self, uuid, file=None, basename_only=False):
         result = []
         directory = self.get_dir(uuid)
         for (dirpath, dirnames, filenames) in os.walk(directory):
             result = filenames
             break # We only want the top level dir
-        return [directory + r for r in result]
+
+        if basename_only:
+            prefix = ""
+        else:
+            prefix = directory
+
+        if file is not None:
+            if file in result:
+                return prefix + file
+            return None
+
+        return [prefix + r for r in result]
 
     def remove(self, uuid, file):
         full = self.get_dir(uuid) + file

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+    <tr><td>Name:</td><td>{{ doc.name }}</td></tr>
+    <tr><td>Date:</td><td>{{ doc.document_date }}</td></tr>
+    <tr><td>Extra:</td><td>{{ doc.extra if doc.extra != None }}</td></tr>
+    <tr><td>Tags:</td>
+        <td>
+            <ul>
+                {% for tag in doc.tags %}
+                <li>{{ tag }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr><td>Files</td>
+        <td>
+            <ul>
+            {% for file in files %}
+            <li>
+                <a href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
+            </li>
+            {% endfor %}
+            </ul>
+        </td>
+    </tr>
+</table>
+{% endblock %}
