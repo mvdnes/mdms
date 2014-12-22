@@ -26,6 +26,9 @@ def get_dbfs():
     fs = filesystem.get_instance(configuration)
     return (db, fs)
 
+def not_found():
+    return flask.render_template("404.html"), 404
+
 @app.route("/")
 def index():
     return flask.render_template("index.html")
@@ -45,10 +48,10 @@ def document(uuid):
     try:
         uuid = uuidlib.UUID(uuid)
     except ValueError:
-        return "invalid UUID" # TODO
+        return not_found()
     doc = db.load(uuid)
     if doc is None:
-        return "not found" # TODO
+        return not_found()
     files = fs.get(uuid, basename_only=True)
     return flask.render_template("document.html", doc=doc, files=files)
 
@@ -58,8 +61,8 @@ def download(uuid, file):
     try:
         uuid = uuidlib.UUID(uuid)
     except ValueError:
-        return "not found" #TODO
+        return not_found()
     path = fs.get(uuid, file=file)
     if path is None:
-        return "not found" # TODO
+        return not_found()
     return flask.send_from_directory("data/" + str(uuid) + "/", file)
