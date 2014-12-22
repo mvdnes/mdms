@@ -54,7 +54,7 @@ class DbSqlite:
         if result is None:
             return None
 
-        stmt = "SELECT tag FROM tag WHERE uuid=:uuid"
+        stmt = "SELECT tag FROM tag WHERE uuid=:uuid ORDER BY tag"
         cursor.execute(stmt, {"uuid": uuid.bytes})
         tags = set([t[0] for t in cursor.fetchall()])
 
