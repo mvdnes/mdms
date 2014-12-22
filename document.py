@@ -3,7 +3,8 @@ import datetime
 
 class Document:
     def __init__(self,
-            uuid=None, name="",
+            uuid=None,
+            name="",
             creation_date=None,
             document_date=None,
             tags=set(),

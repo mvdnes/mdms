@@ -10,6 +10,7 @@ import flask
 import config
 import database
 import filesystem
+import document as doclib
 import datetime
 import dateutil.parser
 import uuid as uuidlib
@@ -141,13 +142,17 @@ def edit(uuid):
 @app.route("/save/<uuid>", methods=['POST'])
 def save(uuid):
     db, fs = get_dbfs()
-    try:
-        uuid = uuidlib.UUID(uuid)
-    except ValueError:
-        return not_found()
-    doc = db.load(uuid)
-    if doc is None:
-        return not_found()
+
+    if uuid == 'new':
+        doc = doclib.Document()
+    else:
+        try:
+            uuid = uuidlib.UUID(uuid)
+        except ValueError:
+            return not_found()
+        doc = db.load(uuid)
+        if doc is None:
+            return not_found()
 
     form = flask.request.form
     if 'name' in form and 'extra' in form and 'date' in form:
@@ -171,7 +176,7 @@ def save(uuid):
         file = form['file']
         fs.remove(uuid, file)
 
-    return flask.redirect(flask.url_for('edit', uuid=str(uuid)), code=303)
+    return flask.redirect(flask.url_for('edit', uuid=doc.uuid), code=303)
 
 @app.route("/delete/<uuid>", methods=['GET', 'POST'])
 def delete(uuid):
@@ -190,3 +195,7 @@ def delete(uuid):
         return flask.redirect(flask.url_for('index'), code=303)
 
     return flask.render_template("delete.html", doc=doc)
+
+@app.route("/create")
+def create():
+    return flask.render_template("create.html")

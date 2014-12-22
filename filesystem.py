@@ -23,6 +23,8 @@ class Filesystem:
 
     def save(self, uuid, file, filename):
         directory = self.get_dir(uuid)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         target = os.path.join(directory, filename)
         file.save(target)
 
