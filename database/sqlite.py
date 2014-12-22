@@ -86,6 +86,12 @@ WHERE document_date > ?
         cursor.execute(stmt, values)
         return [self.load(raw_uuid=r[0]) for r in cursor.fetchall()]
 
+    def tagless(self):
+        cursor = self.conn.cursor()
+        stmt = "SELECT uuid FROM document WHERE uuid NOT IN (SELECT uuid FROM tag)"
+        cursor.execute(stmt)
+        return [self.load(raw_uuid=r[0]) for r in cursor.fetchall()]
+
     def remove(self, doc):
         cursor = self.conn.cursor()
         uuid = doc.uuid.bytes

@@ -7,12 +7,15 @@
     </head>
     <body>
         <h1>MDMS</h1>
-        {% block search %}
+        {% block head %}
         <h2>Search</h2>
         <form method="get" action="{{ url_for('search') }}">
-            <input type="text" name="tags">
+            Tags: <input type="text" name="tags" value="{{ search_tags }}"><br>
+            From: <input type="text" name="from" value="{{ search_from }}"><br>
+            To: <input type="text" name="to" value="{{ search_to }}"><br>
             <input type="submit">
         </form>
+        <a href="{{ url_for('tagless') }}">Get tag-less items</a>
         {% endblock %}
 
         {% block content %}{% endblock %}

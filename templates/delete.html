@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<h2>{{ doc.name }}</h2>
+<a href="{{ url_for('edit', uuid=doc.uuid) }}">Take me back</a>
+<br>
+<br>
+<form method="post" action="{{ url_for('delete', uuid=doc.uuid) }}">
+    <input type="submit" name="yes" value="Ok, delete it">
+</form>
+{% endblock %}
