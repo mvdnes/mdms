@@ -6,11 +6,20 @@
 {% block content %}
 <h2>General</h2>
 <form method="post" action="{{ url_for('save', uuid='new') }}">
-    <table>
-        <tr><td>Name:</td><td><input type="text" name="name" value=""></td></tr>
-        <tr><td>Date:</td><td><input type="text" name="date" value=""></td></tr>
-        <tr><td>Extra:</td><td><textarea name="extra" cols=70 rows=10></textarea></td></tr>
-    </table>
+            <div class="form-group">
+                <label>Name:
+                    <input type="text" name="name" value="" class="form-control">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Date:
+                    <input type="date" name="date" value="" class="form-control">
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="extra">Extra:</label>
+                    <textarea id="extra" name="extra" rows=10 class="form-control"></textarea>
+            </div>
     <input type="submit" value="Save">
 </form>
 {% endblock %}

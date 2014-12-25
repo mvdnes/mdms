@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{{ url_for('tagless') }}">Get tag-less items</a>
-<a href="{{ url_for('create') }}">Create new item</a>
-<a href="{{ url_for('tagoverview') }}">View all tags</a>
+<h2>View other options</h2>
+<ul>
+    <li><a href="{{ url_for('create') }}">Create new item</a></li>
+    <li><a href="{{ url_for('tagless') }}">Get tag-less items</a></li>
+    <li><a href="{{ url_for('tagoverview') }}">View all tags</a></li>
+</ul>
 {% endblock %}
