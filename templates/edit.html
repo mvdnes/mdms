@@ -7,12 +7,21 @@
 {% block content %}
 <h2>General</h2>
 <form method="post" action="{{ url_for('save', uuid=doc.uuid) }}">
-    <table>
-        <tr><td>Name:</td><td><input type="text" name="name" value="{{ doc.name }}"></td></tr>
-        <tr><td>Date:</td><td><input type="text" name="date" value="{{ doc.document_date }}"></td></tr>
-        <tr><td>Extra:</td><td><textarea name="extra" cols=70 rows=10>{{ doc.extra if doc.extra != None }}</textarea></td></tr>
-    </table>
-    <input type="submit" value="Save">
+    <div class="form-group">
+        <label>Name:
+            <input type="text" name="name" value="{{ doc.name }}" class="form-control">
+        </label>
+    </div>
+    <div class="form-group">
+        <label>Date:
+            <input type="date" name="date" value="{{ doc.document_date.date() }}" class="form-control">
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="extra">Extra:</label>
+        <textarea id="extra" name="extra" rows=10 class="form-control">{{ docextra if doc.extra != None }}</textarea>
+    </div>
+    <input type="submit" value="Save" class="btn btn-default">
 </form>
 
 <h2>Tags</h2>
@@ -36,7 +45,7 @@
 <ul>
     {% for file in files %}
     <li>
-       <a href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
+        <a href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
         <form method="post" action="{{ url_for('save', uuid=doc.uuid) }}">
             <input type="hidden" name="file" value="{{ file }}">
             <input type="submit" name="delfile" value="Delete">

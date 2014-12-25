@@ -2,7 +2,7 @@
 {% block content %}
 <ul>
     {% for doc in results %}
-    <li><a href="{{ url_for('document', uuid=doc.uuid) }}">{{ doc.name }} - {{ doc.document_date }}</a></li>
+    <li><a href="{{ url_for('document', uuid=doc.uuid) }}">{{ doc.name }} - {{ doc.document_date.date() }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

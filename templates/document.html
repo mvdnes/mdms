@@ -2,7 +2,7 @@
 {% block content %}
 <h2>{{ doc.name }}</h2>
 <table>
-    <tr><td>Date:</td><td>{{ doc.document_date }}</td></tr>
+    <tr><td>Date:</td><td>{{ doc.document_date.date() }}</td></tr>
     <tr><td>Extra:</td><td><p style="white-space:pre-wrap">{{ doc.extra if doc.extra != None }}</p></td></tr>
     <tr><td>Tags:</td>
         <td>
