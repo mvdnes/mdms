@@ -63,11 +63,11 @@ def search():
     if from_date == datetime.datetime.min:
         search_from = ''
     else:
-        search_from = str(from_date)
+        search_from = str(from_date.date())
     if to_date == datetime.datetime.max:
         search_to = ''
     else:
-        search_to = str(to_date)
+        search_to = str(to_date.date())
 
     return flask.render_template("search.html",
             results=result,
