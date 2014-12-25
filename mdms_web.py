@@ -21,7 +21,7 @@ app = flask.Flask(__name__)
 
 def main(argv):
     args = docopt(__doc__, argv = argv)
-    app.run(debug=args['--debug'])
+    app.run(debug=args['--debug'], host='0.0.0.0')
 
 def get_dbfs():
     configuration = config.parse('config.toml')
