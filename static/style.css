@@ -1,0 +1,16 @@
+.row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.container {
+    margin-bottom: 30px;
+}
+
+.col-add-bottom {
+    margin-bottom: 5px;
+}
+
+.prewrap {
+    white-space: pre-wrap;
+}

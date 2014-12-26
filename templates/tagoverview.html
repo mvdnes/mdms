@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<ul>
+<div class="row">
     {% for tag in tags %}
-    <li><a href="{{ url_for('search') }}?tags={{ tag.name }}">{{ tag.name }}</a>: {{ tag.count }}</li>
+    <div class="col-md-2 col-add-bottom">
+        <a href="{{ url_for('search') }}?tags={{ tag.name }}" class="btn btn-default">{{ tag.name }} ({{ tag.count }})</a>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

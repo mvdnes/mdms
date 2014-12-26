@@ -1,29 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>{{ doc.name }}</h2>
-<table>
-    <tr><td>Date:</td><td>{{ doc.document_date.date() }}</td></tr>
-    <tr><td>Extra:</td><td><p style="white-space:pre-wrap">{{ doc.extra if doc.extra != None }}</p></td></tr>
-    <tr><td>Tags:</td>
-        <td>
-            <ul>
-                {% for tag in doc.tags|sort %}
-                <li>{{ tag }}</li>
-                {% endfor %}
-            </ul>
-        </td>
-    </tr>
-    <tr><td>Files</td>
-        <td>
-            <ul>
-            {% for file in files %}
-            <li>
-                <a href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
-            </li>
-            {% endfor %}
-            </ul>
-        </td>
-    </tr>
-</table>
-<a href="{{ url_for('edit', uuid=doc.uuid) }}">Edit document</a>
+
+<div class="row">
+    <div class="col-md-1">
+        <strong>Date</strong>
+    </div>
+    <div class="col-md-3">
+        {{ doc.document_date.date() }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <strong>Extra</strong>
+    </div>
+    <div class="col-md-3">
+        <div class="prewrap">{{ doc.extra if doc.extra != None }}</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <strong>Tags</strong>
+    </div>
+</div>
+<div class="row">
+    {% for tag in doc.tags|sort %}
+    <div class="col-md-1">
+        <span class="btn btn-default">{{ tag }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+        <strong>Files</strong>
+    </div>
+</div>
+{% for file in files %}
+<div class="row">
+    <div class="col-md-8">
+        <a class="btn btn-link" href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
+    </div>
+</div>
+
+{% endfor %}
+<a class="btn btn-warning" href="{{ url_for('edit', uuid=doc.uuid) }}">Edit document</a>
 {% endblock %}
