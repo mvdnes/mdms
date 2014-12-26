@@ -25,10 +25,12 @@
     </div>
 </form>
 
+{% block results %}
 <h2>Other options</h2>
 <ul>
     <li><a href="{{ url_for('create') }}">Create new item</a></li>
     <li><a href="{{ url_for('tagless') }}">Get tag-less items</a></li>
     <li><a href="{{ url_for('tagoverview') }}">View all tags</a></li>
 </ul>
+{% endblock %}
 {% endblock %}
