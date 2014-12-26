@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block head %}
-<a class="btn btn-info" href="{{ url_for('document', uuid=doc.uuid) }}">View</a>
-{% endblock %}
-
 {% block content %}
 <h2>General</h2>
 <form method="post" action="{{ url_for('save', uuid=doc.uuid) }}">
@@ -87,7 +83,14 @@
     </form>
 </div>
 
-<a href="{{ url_for('delete', uuid=doc.uuid) }}" class="btn btn-danger">
-    Delete document
-</a>
+<div class="row">
+    <div class="col-md-1">
+        <a href="{{ url_for('delete', uuid=doc.uuid) }}" class="btn btn-danger">Delete document</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <a class="btn btn-info" href="{{ url_for('document', uuid=doc.uuid) }}">View document</a>
+    </div>
+</div>
 {% endblock %}

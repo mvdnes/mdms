@@ -75,14 +75,20 @@ SELECT uuid
 FROM document
 WHERE document_date > ?
     AND document_date < ?
+"""
+        stmt_tag = """
     AND uuid IN (
         SELECT uuid
         FROM tag
         WHERE tag IN (""" + ",".join("?" * len(tags)) + """)
         GROUP BY uuid
-        HAVING COUNT(tag) = ?
-    );"""
-        values = [from_date.timestamp(), to_date.timestamp()] + tags + [len(tags)]
+        HAVING COUNT(tag) = ?)
+"""
+
+        values = [from_date.timestamp(), to_date.timestamp()]
+        if len(tags) > 0:
+            stmt = stmt + stmt_tag
+            values = values + tags + [len(tags)]
         cursor.execute(stmt, values)
         return [self.load(raw_uuid=r[0]) for r in cursor.fetchall()]
 

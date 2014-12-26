@@ -40,7 +40,7 @@ def index():
 def search():
     db, _ = get_dbfs()
     result = []
-    tags = flask.request.args.get('tags').split(' ')
+    tags = [tag for tag in flask.request.args.get('tags').split(' ') if tag != '']
     to_raw = flask.request.args.get('to', '')
     from_raw = flask.request.args.get('from', '')
 
@@ -56,8 +56,8 @@ def search():
             from_date = dateutil.parser.parse(from_raw)
         except ValueError:
             pass
-    if len(tags) != 0:
-        result = db.search(tags, from_date, to_date)
+
+    result = db.search(tags, from_date, to_date)
 
     search_tags = ' '.join(tags)
     if from_date == datetime.datetime.min:
