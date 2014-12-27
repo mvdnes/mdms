@@ -29,7 +29,7 @@
 </form>
 
 <h2>Tags</h2>
-<p>Click a tag to delete it</p>
+<p>Click a tag to <strong>delete</strong> it</p>
 <div class="row">
     {% for tag in doc.tags|sort %}
     <div class="col-md-1">
@@ -54,7 +54,6 @@
 </form>
 
 <h2>Files</h2>
-<h3>Delete current</h3>
 {% for file in files %}
 <div class="row">
     <div class="col-md-1">
