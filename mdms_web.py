@@ -35,7 +35,8 @@ def get_dbfs():
     fs = filesystem.get_instance(configuration)
     return (db, fs)
 
-def not_found():
+@app.errorhandler(404)
+def not_found(e = None):
     return flask.render_template("404.html"), 404
 
 @app.route("/")
