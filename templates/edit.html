@@ -63,7 +63,7 @@
         </form>
     </div>
     <div class="col-md-8">
-        <a href="{{ url_for('download', uuid=doc.uuid, file=file) }}" class="btn btn-link">{{ file }}</a>
+        <a class="btn btn-link truncate" href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
     </div>
 </div>
 {% endfor %}

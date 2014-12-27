@@ -39,7 +39,7 @@
 {% for file in files %}
 <div class="row">
     <div class="col-md-8">
-        <a class="btn btn-link" href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
+        <a class="btn btn-link truncate" href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
     </div>
 </div>
 
