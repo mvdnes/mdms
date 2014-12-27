@@ -16,8 +16,14 @@ import dateutil.parser
 import uuid as uuidlib
 from docopt import docopt
 import werkzeug
+import logging
+from logging.handlers import RotatingFileHandler
 
 app = flask.Flask(__name__)
+
+log_handler = RotatingFileHandler('log/mdms.log', maxBytes=10000, backupCount=3)
+log_handler.setLevel(logging.WARNING)
+app.logger.addHandler(log_handler)
 
 def main(argv):
     args = docopt(__doc__, argv = argv)
