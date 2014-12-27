@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row">
     {% for tag in tags %}
-    <div class="col-md-2 col-add-bottom">
+    <div class="col-md-2">
         <a href="{{ url_for('search') }}?tags={{ tag.name }}" class="btn btn-default">{{ tag.name }} ({{ tag.count }})</a>
     </div>
     {% endfor %}
