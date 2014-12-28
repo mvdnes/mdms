@@ -2,6 +2,7 @@ import sqlite3
 import document
 import datetime
 import uuid as uuidlib
+import util
 
 class DbSqlite:
     def __init__(self, configuration):
@@ -32,8 +33,8 @@ class DbSqlite:
         values = {
             "uuid": document.uuid.bytes,
             "name": document.name,
-            "document_date": int(document.document_date.timestamp()),
-            "creation_date": int(document.creation_date.timestamp()),
+            "document_date": int(util.unixtime(document.document_date)),
+            "creation_date": int(util.unixtime(document.creation_date)),
             "extra": document.extra
         }
         cursor.execute(stmt, values)
@@ -85,7 +86,7 @@ WHERE document_date > ?
         HAVING COUNT(tag) = ?)
 """
 
-        values = [from_date.timestamp(), to_date.timestamp()]
+        values = [util.unixtime(from_date), util.unixtime(to_date)]
         if len(tags) > 0:
             stmt = stmt + stmt_tag
             values = values + tags + [len(tags)]
