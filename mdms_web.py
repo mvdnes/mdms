@@ -25,6 +25,18 @@ log_handler = RotatingFileHandler('log/mdms.log', maxBytes=10000, backupCount=3)
 log_handler.setLevel(logging.WARNING)
 app.logger.addHandler(log_handler)
 
+@app.before_request
+def get_versions():
+    import platform
+    import subprocess
+
+    flask.g.python_version = platform.python_version()
+    flask.g.flask_version = flask.__version__
+    try:
+        flask.g.git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
+    except subprocess.CalledProcessError:
+        flask.g.git_hash = "unknown"
+
 def main(argv):
     args = docopt(__doc__, argv = argv)
     app.run(debug=args['--debug'], host='0.0.0.0')
