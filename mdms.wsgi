@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+import sys
+import os
 
-#import logging, sys
-#logging.basicConfig(stream=sys.stderr)
+sys.path.append(os.path.dirname(__file__))
 
 from mdms_web import app as application
