@@ -30,18 +30,19 @@ class DbSqlite:
             """
         else:
             stmt = "INSERT INTO document VALUES (:uuid, :name, :creation_date, :document_date, :extra)"
+        sqlite_uuid = sqlite3.Binary(document.uuid.bytes)
         values = {
-            "uuid": document.uuid.bytes,
+            "uuid": sqlite_uuid,
             "name": document.name,
             "document_date": int(util.unixtime(document.document_date)),
             "creation_date": int(util.unixtime(document.creation_date)),
             "extra": document.extra
         }
         cursor.execute(stmt, values)
-        cursor.execute("DELETE FROM tag WHERE uuid=:uuid", {"uuid": document.uuid.bytes})
+        cursor.execute("DELETE FROM tag WHERE uuid=:uuid", {"uuid": sqlite_uuid})
         def tag_gen():
             for t in document.tags:
-                yield (document.uuid.bytes, t)
+                yield (sqlite_uuid, t)
         cursor.executemany("INSERT INTO tag VALUES (:uuid, :tag)", tag_gen())
         self.conn.commit()
 
@@ -50,13 +51,14 @@ class DbSqlite:
         stmt = "SELECT name, creation_date, document_date, extra FROM document WHERE uuid = :uuid"
         if raw_uuid is not None:
             uuid = uuidlib.UUID(bytes = raw_uuid)
-        cursor.execute(stmt, {"uuid": uuid.bytes})
+        sqlite_uuid = sqlite3.Binary(uuid.bytes)
+        cursor.execute(stmt, {"uuid": sqlite_uuid})
         result = cursor.fetchone()
         if result is None:
             return None
 
         stmt = "SELECT tag FROM tag WHERE uuid=:uuid"
-        cursor.execute(stmt, {"uuid": uuid.bytes})
+        cursor.execute(stmt, {"uuid": sqlite_uuid})
         tags = set([t[0] for t in cursor.fetchall()])
 
         return document.Document(
@@ -108,8 +110,9 @@ WHERE document_date > ?
     def remove(self, doc):
         cursor = self.conn.cursor()
         uuid = doc.uuid.bytes
-        cursor.execute("DELETE FROM document WHERE uuid = ?", (uuid,))
-        cursor.execute("DELETE FROM tag WHERE uuid = ?", (uuid,))
+        sqlite_uuid = sqlite3.Binary(uuid.bytes)
+        cursor.execute("DELETE FROM document WHERE uuid = ?", (sqlite_uuid,))
+        cursor.execute("DELETE FROM tag WHERE uuid = ?", (sqlite_uuid,))
         self.conn.commit()
 
     def update_db(self):
