@@ -5,7 +5,7 @@ import uuid as uuidlib
 import util
 import database
 
-class DbSqlite:
+class MdmsSqlite(database.MdmsDatabase):
     def __init__(self, configuration):
         if "sqlite" not in configuration:
             raise KeyError("database.sqlite not found in configuration")
