@@ -64,8 +64,8 @@ class DbSqlite:
         return document.Document(
             uuid = uuid,
             name = result[0],
-            creation_date = datetime.datetime.fromtimestamp(result[1]),
-            document_date = datetime.datetime.fromtimestamp(result[2]),
+            creation_date = datetime.date.fromtimestamp(result[1]),
+            document_date = datetime.date.fromtimestamp(result[2]),
             extra = result[3],
             tags = tags,
             in_database = True,
@@ -76,8 +76,8 @@ class DbSqlite:
         stmt = """
 SELECT uuid
 FROM document
-WHERE document_date > ?
-    AND document_date < ?
+WHERE document_date >= ?
+    AND document_date <= ?
 """
         stmt_tag = """
     AND uuid IN (

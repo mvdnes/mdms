@@ -12,7 +12,7 @@ import json
 def main(argv):
     args = docopt(__doc__, argv = argv)
     db, _ = get_dbfs()
-    docs = db.search([], datetime.datetime.min, datetime.datetime.max)
+    docs = db.search([], datetime.date.min, datetime.date.max)
     res = []
     for doc in docs:
         res.append({

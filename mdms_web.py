@@ -63,30 +63,30 @@ def search():
     to_raw = flask.request.args.get('to', '')
     from_raw = flask.request.args.get('from', '')
 
-    to_date = datetime.datetime.max
+    to_date = datetime.date.max
     if to_raw != '':
         try:
-            to_date = dateutil.parser.parse(to_raw)
+            to_date = dateutil.parser.parse(to_raw).date()
         except ValueError:
             pass
-    from_date = datetime.datetime.min
+    from_date = datetime.date.min
     if from_raw != '':
         try:
-            from_date = dateutil.parser.parse(from_raw)
+            from_date = dateutil.parser.parse(from_raw).date()
         except ValueError:
             pass
 
     result = db.search(tags, from_date, to_date)
 
     search_tags = ' '.join(tags)
-    if from_date == datetime.datetime.min:
+    if from_date == datetime.date.min:
         search_from = ''
     else:
-        search_from = str(from_date.date())
-    if to_date == datetime.datetime.max:
+        search_from = str(from_date)
+    if to_date == datetime.date.max:
         search_to = ''
     else:
-        search_to = str(to_date.date())
+        search_to = str(to_date)
 
     return flask.render_template("search.html",
             results=result,
@@ -176,7 +176,7 @@ def save(uuid):
     form = flask.request.form
     if 'name' in form and 'extra' in form and 'date' in form:
         try:
-            date = dateutil.parser.parse(form['date'])
+            date = dateutil.parser.parse(form['date']).date()
         except ValueError:
             return "Invalid date" #TODO
         doc.name = form['name']

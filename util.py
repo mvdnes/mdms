@@ -1,6 +1,6 @@
 import datetime
 
 def unixtime(dt):
-    epoch = datetime.datetime.utcfromtimestamp(0)
+    epoch = datetime.date.fromtimestamp(0)
     delta = dt - epoch
     return delta.total_seconds()

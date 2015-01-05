@@ -16,11 +16,11 @@ class Document:
             self.uuid = uuid
         self.name = name
         if creation_date is None:
-            self.creation_date = datetime.datetime.now()
+            self.creation_date = datetime.date.today()
         else:
             self.creation_date = creation_date
         if document_date is None:
-            self.document_date = datetime.datetime.now()
+            self.document_date = datetime.date.today()
         else:
             self.document_date = document_date
         self.tags = tags
