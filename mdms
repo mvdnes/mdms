@@ -8,11 +8,8 @@ options:
     --help, -h  display help information
 
 the available commands are:
-    search      Search for a document
-    create      Create a new document
-    modify      Modify metadata or files
-    remove      Remove a document
     web         Start webserver
+    export      Export the database
 
 use 'mdms <command> -h' for information about a command
 """
@@ -32,21 +29,12 @@ def main():
             options_first = True)
     argv = [args['<command>']] + args['<args>']
 
-    if args['<command>'] == 'search':
-        import mdms_search
-        mdms_search.main(argv, db, fs)
-    elif args['<command>'] == 'create':
-        import mdms_create
-        mdms_create.main(argv, db, fs)
-    elif args['<command>'] == 'modify':
-        import mdms_modify
-        mdms_modify.main(argv, db, fs)
-    elif args['<command>'] == 'remove':
-        import mdms_remove
-        mdms_remove.main(argv, db, fs)
-    elif args['<command>'] == 'web':
+    if args['<command>'] == 'web':
         import mdms_web
         mdms_web.main(argv)
+    elif args['<command>'] == 'export':
+        import mdms_export
+        mdms_export.main(argv)
     else:
         print(__doc__)
 
