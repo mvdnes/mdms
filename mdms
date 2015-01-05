@@ -10,6 +10,7 @@ options:
 the available commands are:
     web         Start webserver
     export      Export the database
+    import      Import data to a database
 
 use 'mdms <command> -h' for information about a command
 """
@@ -35,6 +36,9 @@ def main():
     elif args['<command>'] == 'export':
         import mdms_export
         mdms_export.main(argv)
+    elif args['<command>'] == 'import':
+        import mdms_import
+        mdms_import.main(argv)
     else:
         print(__doc__)
 

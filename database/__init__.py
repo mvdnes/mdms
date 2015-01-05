@@ -11,3 +11,6 @@ def get_instance(configuration):
         return sqlite.DbSqlite(configuration['database'])
     else:
         raise ValueError("Invalid database type")
+
+class ExistsError(Exception):
+    pass

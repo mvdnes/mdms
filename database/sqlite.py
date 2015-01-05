@@ -3,6 +3,7 @@ import document
 import datetime
 import uuid as uuidlib
 import util
+import database
 
 class DbSqlite:
     def __init__(self, configuration):
@@ -38,7 +39,12 @@ class DbSqlite:
             "creation_date": int(util.unixtime(document.creation_date)),
             "extra": document.extra
         }
-        cursor.execute(stmt, values)
+
+        try:
+            cursor.execute(stmt, values)
+        except sqlite3.IntegrityError:
+            raise database.ExistsError()
+
         cursor.execute("DELETE FROM tag WHERE uuid=:uuid", {"uuid": sqlite_uuid})
         def tag_gen():
             for t in document.tags:
