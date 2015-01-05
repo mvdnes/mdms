@@ -109,8 +109,7 @@ WHERE document_date > ?
 
     def remove(self, doc):
         cursor = self.conn.cursor()
-        uuid = doc.uuid.bytes
-        sqlite_uuid = sqlite3.Binary(uuid.bytes)
+        sqlite_uuid = sqlite3.Binary(doc.uuid.bytes)
         cursor.execute("DELETE FROM document WHERE uuid = ?", (sqlite_uuid,))
         cursor.execute("DELETE FROM tag WHERE uuid = ?", (sqlite_uuid,))
         self.conn.commit()
