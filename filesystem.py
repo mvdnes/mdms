@@ -51,7 +51,7 @@ class Filesystem:
         full = self.get_dir(uuid) + file
         try:
             os.remove(full)
-        except FileNotFoundError:
+        except OSError:
             return False
         return True
 
@@ -59,5 +59,5 @@ class Filesystem:
         directory = self.get_dir(uuid)
         try:
             shutil.rmtree(directory)
-        except FileNotFoundError:
+        except OSError:
             pass
