@@ -34,7 +34,7 @@ def get_versions():
     flask.g.flask_version = flask.__version__
     try:
         flask.g.git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, OSError):
         flask.g.git_hash = "unknown"
 
 def main(argv):
