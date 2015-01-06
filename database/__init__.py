@@ -6,6 +6,7 @@ def get_instance(configuration):
 
     dbtype = configuration['database']['type']
     if dbtype == 'sqlite':
+        from . import sqlite
         return sqlite.MdmsSqlite(configuration['database'])
     else:
         raise ValueError("Invalid database type")
@@ -43,5 +44,3 @@ class MdmsDatabase:
 
 class ExistsError(Exception):
     pass
-
-from . import sqlite
