@@ -23,6 +23,8 @@ app = flask.Flask(__name__)
 
 log_handler = RotatingFileHandler('log/mdms.log', maxBytes=10000, backupCount=3)
 log_handler.setLevel(logging.WARNING)
+log_formatter = logging.Formatter("%(asctime)s - %(levelname)s\n%(message)s")
+log_handler.setFormatter(log_formatter)
 app.logger.addHandler(log_handler)
 
 @app.before_request
