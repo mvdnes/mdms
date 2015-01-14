@@ -2,7 +2,6 @@ import sqlite3
 import document
 import datetime
 import uuid as uuidlib
-import util
 import database
 
 class MdmsSqlite(database.MdmsDatabase):
@@ -35,8 +34,8 @@ class MdmsSqlite(database.MdmsDatabase):
         values = {
             "uuid": sqlite_uuid,
             "name": document.name,
-            "document_date": int(util.unixtime(document.document_date)),
-            "creation_date": int(util.unixtime(document.creation_date)),
+            "document_date": document.document_date.isoformat(),
+            "creation_date": document.creation_date.isoformat(),
             "extra": document.extra
         }
 
@@ -70,8 +69,8 @@ class MdmsSqlite(database.MdmsDatabase):
         return document.Document(
             uuid = uuid,
             name = result[0],
-            creation_date = datetime.date.fromtimestamp(result[1]),
-            document_date = datetime.date.fromtimestamp(result[2]),
+            creation_date = datetime.datetime.strptime(result[1], "%Y-%m-%d").date(),
+            document_date = datetime.datetime.strptime(result[2], "%Y-%m-%d").date(),
             extra = result[3],
             tags = tags,
             in_database = True,
@@ -94,7 +93,7 @@ WHERE document_date >= ?
         HAVING COUNT(tag) = ?)
 """
 
-        values = [util.unixtime(from_date), util.unixtime(to_date)]
+        values = [from_date.isoformat(), to_date.isoformat()]
         if len(tags) > 0:
             stmt = stmt + stmt_tag
             values = values + tags + [len(tags)]
@@ -139,7 +138,28 @@ WHERE document_date >= ?
                     extra TEXT)
             """)
             cursor.execute("CREATE TABLE tag(uuid BLOB, tag TEXT, PRIMARY KEY (uuid, tag))")
-        cursor.execute("UPDATE config SET value = '1' WHERE key = 'version'")
+        if old_version < 2:
+            cursor.executescript("""
+                BEGIN TRANSACTION;
+                ALTER TABLE document RENAME TO document_old;
+                CREATE TABLE document(uuid BLOB PRIMARY KEY, name TEXT, creation_date TEXT, document_date TEXT, extra TEXT);
+                INSERT INTO document(uuid, name, creation_date, document_date, extra) SELECT uuid, name, creation_date, document_date, extra FROM document_old;
+                DROP TABLE document_old;
+                COMMIT;""")
+            self.conn.commit()
+
+            cursor2 = self.conn.cursor()
+            cursor.execute("SELECT uuid, creation_date, document_date FROM document");
+            while True:
+                result = cursor.fetchone()
+                if result is None:
+                    break
+                uuidblob = result[0]
+                creation_date = datetime.date.fromtimestamp(int(result[1])).isoformat()
+                document_date = datetime.date.fromtimestamp(int(result[2])).isoformat()
+                cursor2.execute("UPDATE document SET creation_date = ?, document_date = ? WHERE uuid = ?", (creation_date, document_date, uuidblob))
+
+        cursor.execute("UPDATE config SET value = '2' WHERE key = 'version'")
         self.conn.commit()
     
     def ensure_notempty(self):
