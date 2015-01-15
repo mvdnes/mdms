@@ -10,6 +10,7 @@
         {{ doc.document_date }}
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-1">
         <strong>Extra</strong>
@@ -18,17 +19,17 @@
         <div class="prewrap">{{ doc.extra if doc.extra != None }}</div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-1">
         <strong>Tags</strong>
     </div>
 </div>
-<div class="row">
-    {% for tag in doc.tags|sort %}
-    <div class="col-md-1">
-        <a href="{{ url_for('search') }}?tags={{ tag }}" class="btn btn-default">{{ tag }}</a>
-    </div>
-    {% endfor %}
+
+<div>
+	{% for tag in doc.tags|sort %}
+	<a href="{{ url_for('search') }}?tags={{ tag }}" class="btn btn-default btn-inlineblock">{{ tag }}</a>
+	{% endfor %}
 </div>
 
 <div class="row">

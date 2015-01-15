@@ -23,6 +23,12 @@
     margin-top: 5px;
 }
 
+.btn-inlineblock
+{
+	display: inline-block;
+	margin-top: 5px;
+}
+
 .prewrap {
     white-space: pre-wrap;
 }

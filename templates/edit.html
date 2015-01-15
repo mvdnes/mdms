@@ -30,9 +30,9 @@
 
 <h2>Tags</h2>
 <p>Click a tag to <strong>delete</strong> it</p>
-<div class="row">
+<div>
     {% for tag in doc.tags|sort %}
-    <div class="col-md-1">
+    <div class="btn-inlineblock">
         <form method="post" action="{{ url_for('save', uuid=doc.uuid) }}">
             <input type="hidden" name="tag" value="{{ tag }}" class="form-control">
             <button type="submit" name="deltag" class="btn btn-danger">{{ tag }}</button>

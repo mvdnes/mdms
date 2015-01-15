@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row">
-    {% for tag in tags %}
-    <div class="col-md-2">
-        <a href="{{ url_for('search') }}?tags={{ tag.name }}" class="btn btn-default">{{ tag.name }} ({{ tag.count }})</a>
-    </div>
+<div>
+    {% for tag in tags|sort(attribute='count',reverse=True) %}
+    <a href="{{ url_for('search') }}?tags={{ tag.name }}" class="btn btn-default btn-inlineblock">{{ tag.name }} ({{ tag.count }})</a>
     {% endfor %}
 </div>
 {% endblock %}
