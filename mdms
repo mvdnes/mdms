@@ -11,6 +11,7 @@ the available commands are:
     web         Start webserver
     export      Export the database
     import      Import data to a database
+    test        Test the MDMS framework
 
 use 'mdms <command> -h' for information about a command
 """
@@ -39,9 +40,11 @@ def main():
     elif args['<command>'] == 'import':
         import mdms_import
         mdms_import.main(argv)
+    elif args['<command>'] == 'test':
+        import mdms_test
+        mdms_test.main(argv)
     else:
         print(__doc__)
-
 
 if __name__ == '__main__':
     main()

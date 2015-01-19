@@ -1,0 +1,8 @@
+[database]
+type = "sqlite"
+
+[database.sqlite]
+file = "dbmdms.db"
+
+[filesystem]
+location = "data"
