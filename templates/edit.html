@@ -54,7 +54,7 @@
 </form>
 
 <h2>Files</h2>
-{% for file in files %}
+{% for file in files|sort %}
 <div class="row">
     <div class="col-md-1">
         <form method="post" action="{{ url_for('save', uuid=doc.uuid) }}">

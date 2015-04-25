@@ -37,7 +37,7 @@
         <strong>Files</strong>
     </div>
 </div>
-{% for file in files %}
+{% for file in files|sort %}
 <div class="row">
     <div class="col-md-8">
         <a class="btn btn-link truncate" href="{{ url_for('download', uuid=doc.uuid, file=file) }}">{{ file }}</a>
