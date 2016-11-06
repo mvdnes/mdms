@@ -190,8 +190,8 @@ def save(uuid):
         doc.remove_tag(tag)
         db.save(doc)
     if 'addtag' in form and 'tag' in form:
-        tag = form['tag']
-        doc.add_tag(tag)
+        for tag in form['tag'].split():
+            doc.add_tag(tag)
         db.save(doc)
     if 'delfile' in form and 'file' in form:
         file = form['file']
